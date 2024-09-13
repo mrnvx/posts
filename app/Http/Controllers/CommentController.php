@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $post= Post::all();
-        return view('posts.index', ['posts' => $post]);
+        //
     }
 
     /**
@@ -21,7 +20,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        return view('comment.create');
     }
 
     /**
@@ -30,10 +29,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $data['post_id'] = 1;
         $data['user_id'] = 1;
-        Post::create($data);
+        Comment::create($data);
 
-        return redirect()->route('posts.index');
+        return redirect()->route('post.index');
     }
 
     /**
@@ -41,7 +41,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', ['post' => $post]);
+        return view('comment.show', ['post' => $post]);
     }
     
     /**
@@ -49,7 +49,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', ['post' => $post]);
+        return view('comment.edit', ['post' => $post]);
         
     }
 
@@ -59,6 +59,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->all();
+        $data['post_id'] = 1;
         $data['user_id'] = 1;
         // Post::create($data);
 
@@ -76,22 +77,4 @@ class PostController extends Controller
 
         return redirect()->route('posts.index');
     }
-
-    public function addComment(Request $request, Comment $comment) {
-
-        if ($post->comment()->where('id', $request['comment'])->exists()) {
-            return redirect('/comment/' . $comment->id)->with('error', 'Comment is already in the comment!');
-        }
-        $post->comment()->attach($request['post']);
-        
-        return redirect('/comment/' . $comment->id)->with('success', 'Comment added successfully!');
-    }
-    public function removeComment(Request $request, Comment $comment) {
-        
-        
-        $comment->comment()->detach($request['comment']);
-
-        return redirect('/comment/' . $comment->id)->with('success', 'Comment removed successfully!');
-    }
-
 }

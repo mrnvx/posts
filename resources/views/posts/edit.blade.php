@@ -12,5 +12,7 @@
         <textarea name="content" id="content" cols="30" rows="10">{{$post->content}}</textarea>
         <br>
         <input type="submit" value="Create" style="border: 3px solid ">
+        <br>
+        <a href="{{route('posts.index')}}">Back</a>
     </form>
 </x-app-layout>
